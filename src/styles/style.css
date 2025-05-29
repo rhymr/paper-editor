@@ -90,3 +90,25 @@ li.dropdown {
   text-align: left;
 }
 /*NAV BAR - END*/
+
+.main-container {
+    display: flex;
+    height: calc(100vh - 50px); /* Adjust 50px if your navbar is a different height */
+}
+
+.column {
+    flex: 1;
+    box-sizing: border-box;
+}
+
+#right-column {
+    padding: 4px;
+    border: 1px dashed #888;
+}
+
+#dragbar {
+    width: 6px;
+    cursor: ew-resize;
+    /* border: 1px dashed #888; */
+    z-index: 10;
+}

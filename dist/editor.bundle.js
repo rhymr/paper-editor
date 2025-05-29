@@ -24867,7 +24867,7 @@ var editor = (function (exports) {
 
    const view = new EditorView({
        extensions: createEditorConfig(),
-       parent: document.body
+       parent: document.body.querySelector("#editor"),
    });
 
    setEditorView(view);

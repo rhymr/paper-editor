@@ -37,7 +37,7 @@ export function createEditorConfig() {
 
 export const view = new EditorView({
     extensions: createEditorConfig(),
-    parent: document.body
+    parent: document.body.querySelector("#editor"),
 })
 
 setEditorView(view);

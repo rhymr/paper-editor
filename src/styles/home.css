@@ -16,11 +16,11 @@ html, body {
     color: #fff; /* Set the text color to white */
     margin-bottom: 2.5%; /* Add spacing below the header */
     padding: 5px 15px 5px 15px;
-    border: white dashed 1px;
+    /* border: white dashed 1px; */
 }
 
 .header:hover {
-    border: #888 dashed 1px;
+    /* border: #888 dashed 1px; */
 }
 
 /* Style for the showcase image */
@@ -51,7 +51,7 @@ html, body {
 }
 
 h1:hover {
-    border: #888 dashed 1px;
+    /* border: #888 dashed 1px; */
 }
 
 /* Style for the buttons in dark mode */
@@ -63,7 +63,7 @@ h1:hover {
     text-decoration: none;
     border: #888 dashed 1px;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 36px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
