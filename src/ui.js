@@ -1,5 +1,10 @@
 import {checkAndUpdateForContent, saveEditorContent} from "./utils/util";
 import {documentId, setAutoSave, setDocumentId} from "./config/config";
+import { phoneticRhymeHighlighter } from './words/phoneticRhymeHighlighter.js';
+import { syllableCounter } from './words/syllables.js';
+import { StateEffect } from '@codemirror/state';
+import { EditorView } from '@codemirror/view';
+import { Compartment } from '@codemirror/state';
 
 let editorView = null;
 
@@ -213,3 +218,49 @@ function onLoadWindow() {
 
     setDocumentId(null)
 }
+
+// --- Feature toggles for rhyme highlighting and syllable counter ---
+// Helper: add/remove extensions using CodeMirror's compartment
+const rhymeCompartment = new Compartment();
+const syllableCompartment = new Compartment();
+
+function toggleRhymeHighlight(view, enable) {
+    if (!view) return;
+    view.dispatch({
+        effects: rhymeCompartment.reconfigure(enable ? [phoneticRhymeHighlighter] : [])
+    });
+}
+
+function toggleSyllableCounter(view, enable) {
+    if (!view) return;
+    view.dispatch({
+        effects: syllableCompartment.reconfigure(enable ? [syllableCounter()] : [])
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const rhymeCheckbox = document.getElementById('toggleRhymeHighlight');
+    const syllableCheckbox = document.getElementById('toggleSyllableCounter');
+    function tryWireToggles() {
+        if (!window.editorView) {
+            setTimeout(tryWireToggles, 100);
+            return;
+        }
+        if (rhymeCheckbox) {
+            rhymeCheckbox.addEventListener('change', e => {
+                toggleRhymeHighlight(window.editorView, e.target.checked);
+            });
+        }
+        if (syllableCheckbox) {
+            syllableCheckbox.addEventListener('change', e => {
+                toggleSyllableCounter(window.editorView, e.target.checked);
+            });
+        }
+    }
+    tryWireToggles();
+});
+
+// When initializing the editor, add the compartments to the extensions array:
+// [rhymeCompartment.of([phoneticRhymeHighlighter]), syllableCompartment.of([syllableCounter()]), ...otherExtensions]
+
+export { rhymeCompartment, syllableCompartment };

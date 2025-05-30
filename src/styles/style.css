@@ -57,6 +57,9 @@ body {
   overflow: hidden;
   background-color: #333;
   border: 1px dashed #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .navbar li {
@@ -106,6 +109,21 @@ li.dropdown {
   text-decoration: none;
   display: block;
   text-align: left;
+}
+
+/* Center the checkboxes container specifically */
+.navbar li.checkbox-center {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.navbar li.checkbox-center label {
+  margin: 4px 8px;
+}
+
+.navbar li.checkbox-center label:last-child {
+  margin-right: 0;
 }
 /*NAV BAR - END*/
 
@@ -275,6 +293,11 @@ li.dropdown {
 #chat-form button:hover {
     background: #005b41;
     border-color: #81c784;
+}
+
+.cm-content .rhyme-highlight {
+  font-weight: bold;
+  color: #222;
 }
 
 @media (max-width: 900px) {

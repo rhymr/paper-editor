@@ -18,8 +18,18 @@
                 <a id="saveButton">Export File</a>
             </div>
         </li>
-        <li><a id="toggleFullscreen" onclick="toggleFullscreen()">Fullscreen</a></li>
-        <li><a class="right">Settings</a></li>
+        
+        <li class="checkbox-center">
+            <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                <input type="checkbox" id="toggleFullscreen" onchange="toggleFullscreen()" style="margin:0;"> Fullscreen
+            </label>
+            <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                <input type="checkbox" id="toggleRhymeHighlight" checked style="margin:0;"> Rhyme Highlight (beta)
+            </label>
+            <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                <input type="checkbox" id="toggleSyllableCounter" checked style="margin:0;"> Syllable Counter
+            </label>
+        </li>
     </ul>
 </div>
 

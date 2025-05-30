@@ -5,7 +5,7 @@ todo.txt
 node_modules
 
 # TypeScript compiled files
-# dist
+dist
 *.tsbuildinfo
 
 # Environment files

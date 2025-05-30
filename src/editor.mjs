@@ -2,7 +2,7 @@ import {basicSetup} from "codemirror"
 import {barf} from 'thememirror';
 import {EditorView} from "@codemirror/view"
 import {autocompletion} from "@codemirror/autocomplete"
-import {initializeUIElements, setEditorView} from "./ui.js";
+import {initializeUIElements, setEditorView, rhymeCompartment, syllableCompartment} from "./ui.js";
 import {checkAndUpdateForContent} from "./utils/util.js";
 import {autoSaveEnabled} from "./config/config.js";
 import {wordCounter} from "./words/words.js";
@@ -11,6 +11,7 @@ import {englishCompletions} from "./words/completions.js";
 import { openaiApiKey, setApiKey, fetchModels } from "./utils/api.js";
 import { chatHistory, handleChatSubmit, addUserMessage } from "./utils/chat.js";
 import { renderMarkdown } from "./utils/markdown.js";
+import { phoneticRhymeHighlighter } from "./words/phoneticRhymeHighlighter.js";
 
 // --- Editor Content Tracking ---
 export let latestEditorContent = "";
@@ -55,7 +56,8 @@ export function createEditorConfig() {
     return [
         basicSetup,
         barf,
-        syllableCounter(),
+        rhymeCompartment.of([phoneticRhymeHighlighter]),
+        syllableCompartment.of([syllableCounter()]),
         updateListener(),
         wordCounter(),
         autocompletion({override: [englishCompletions]})
