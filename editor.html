@@ -7,59 +7,63 @@
     <title>Rhymr (Beta)</title>
 </head>
 <body>
-<div class="navbar">
-    <ul>
-        <li class="dropdown">
-            <a class="dropbtn">File</a>
-            <div class="dropdown-content">
-                <a id="newButton">New File</a>
-                <input type="file" id="fileInput" style="display: none;" accept=".txt" />
-                <a id="openFileButton">Open File</a>
-                <a id="saveButton">Export File</a>
-            </div>
-        </li>
-        
-        <li class="checkbox-center">
-            <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                <input type="checkbox" id="toggleFullscreen" onchange="toggleFullscreen()" style="margin:0;"> Fullscreen
-            </label>
-            <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                <input type="checkbox" id="toggleRhymeHighlight" checked style="margin:0;"> Rhyme Highlight (beta)
-            </label>
-            <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
-                <input type="checkbox" id="toggleSyllableCounter" checked style="margin:0;"> Syllable Counter
-            </label>
-        </li>
-    </ul>
-</div>
-
-<div class="main-container">
-    <div class="column" id="left-column">
-        <div id="editor"></div>
-    </div>
-    <div id="dragbar"></div>
-    <div class="column" id="right-column">
-        <div id="chat-container">
-            <!-- API Key input at the top -->
-            <form id="apikey-form" autocomplete="off" style="margin-bottom:8px; display:flex; gap:8px;">
-                <input id="apikey-input" type="password" placeholder="OpenAI API Key" style="flex:1; background:#0f0f0f; border:1px solid #888; color:#fff; border-radius:3px; padding:6px 10px; font-family:monospace; font-size:1em;">
-                <button type="button" id="spy-toggle" style="background:#0f0f0f; color:#fff; border:1px solid #888; border-radius:3px; padding:6px 10px; font-family:monospace; font-size:1em; cursor:pointer;">👁️</button>
-                <button type="submit" id="apikey-save" style="background:#0f0f0f; color:#fff; border:1px solid #888; border-radius:3px; padding:6px 16px; font-family:monospace; font-size:1em; cursor:pointer;">Save</button>
-                <div style="display:flex; align-items:center; gap:4px;">
-                    <!-- <label for="model-select">Model:</label> -->
-                    <select id="model-select">
-                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                        <option value="gpt-4">gpt-4</option>
-                    </select>
+<div class="app-container">
+    <div class="navbar">
+        <ul>
+            <li class="dropdown">
+                <a class="dropbtn">File</a>
+                <div class="dropdown-content">
+                    <a id="newButton">New File</a>
+                    <input type="file" id="fileInput" style="display: none;" accept=".txt" />
+                    <a id="openFileButton">Open File</a>
+                    <a id="saveButton">Export File</a>
                 </div>
-            </form>
+            </li>
             
+            <li class="checkbox-center">
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                    <input type="checkbox" id="toggleFullscreen" onchange="toggleFullscreen()" style="margin:0;"> Fullscreen
+                </label>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                    <input type="checkbox" id="toggleRhymeHighlight" checked style="margin:0;"> Rhyme Highlight (beta)
+                </label>
+                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+                    <input type="checkbox" id="toggleSyllableCounter" checked style="margin:0;"> Syllable Counter
+                </label>
+            </li>
+            <li class="navbar-apikey-form">
+                <form id="apikey-form" autocomplete="off">
+                    <input id="apikey-input" type="password" placeholder="OpenAI API Key">
+                    <button type="button" id="spy-toggle">👁️</button>
+                    <button type="submit" id="apikey-save">Save</button>
+                    <div>
+                        <select id="model-select">
+                            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                            <option value="gpt-4">gpt-4</option>
+                        </select>
+                    </div>
+                </form>
+            </li>
+        </ul>
+    </div>
 
-            <div id="chat-messages"></div>
-            <form id="chat-form" autocomplete="off" style="display:flex;">
-                <textarea id="chat-input" placeholder="Type a message..." rows="1" style="resize: none; flex:1; background:#0f0f0f; border:1px solid #888; color:#fff; border-radius:3px; padding:6px 10px; font-family:monospace; font-size:1em;"></textarea>
-                <button type="submit">Send</button>
-            </form>
+    <div class="main-container">
+        <div class="column" id="file-column">
+            <div id="file-directory"></div>
+        </div>
+        <div class="dragbar" id="dragbar-file"></div>
+        <div class="column" id="left-column">
+            <div id="editor"></div>
+        </div>
+        <div class="dragbar" id="dragbar-editor"></div>
+        <div class="column" id="right-column">
+            <div id="chat-container">
+                <div id="chat-messages"></div>
+                <form id="chat-form" autocomplete="off">
+                    <textarea id="chat-input" placeholder="Type a message..." rows="1"></textarea>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
