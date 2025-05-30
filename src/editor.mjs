@@ -8,6 +8,33 @@ import {autoSaveEnabled} from "./config/config.js";
 import {wordCounter} from "./words/words.js";
 import {syllableCountCache, syllableCounter} from "./words/syllables.js";
 import {englishCompletions} from "./words/completions.js";
+import { openaiApiKey, setApiKey, fetchModels } from "./utils/api.js";
+import { chatHistory, handleChatSubmit, addUserMessage } from "./utils/chat.js";
+import { renderMarkdown } from "./utils/markdown.js";
+
+// --- Editor Content Tracking ---
+export let latestEditorContent = "";
+
+export function updateEditorContentFromView(editorView, windowEditor) {
+    if (typeof editorView !== "undefined" && editorView && editorView.state) {
+        latestEditorContent = editorView.state.doc.toString();
+    } else if (windowEditor && typeof windowEditor.getValue === "function") {
+        latestEditorContent = windowEditor.getValue();
+    }
+}
+
+export function attachEditorUpdate(editorView, windowEditor, updateFn) {
+    if (typeof editorView !== "undefined" && editorView && editorView.state) {
+        editorView.dispatch = ((origDispatch => tr => {
+            origDispatch(tr);
+            updateFn();
+        })(editorView.dispatch.bind(editorView)));
+        updateFn();
+    } else if (windowEditor && typeof windowEditor.on === "function") {
+        windowEditor.on("change", updateFn);
+        updateFn();
+    }
+}
 
 export function updateListener() {
     return EditorView.updateListener.of(update => {
@@ -41,5 +68,82 @@ export const view = new EditorView({
 })
 
 setEditorView(view);
+
+// --- UI/Chat/Model Logic ---
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
+const chatMessages = document.getElementById('chat-messages');
+
+const apikeyForm = document.getElementById('apikey-form');
+const apikeyInput = document.getElementById('apikey-input');
+const spyToggle = document.getElementById('spy-toggle');
+const apikeySave = document.getElementById('apikey-save');
+
+if (openaiApiKey) {
+    apikeyInput.value = openaiApiKey;
+}
+
+spyToggle.addEventListener('click', function() {
+    if (apikeyInput.type === 'password') {
+        apikeyInput.type = 'text';
+        spyToggle.textContent = '🙈';
+    } else {
+        apikeyInput.type = 'password';
+        spyToggle.textContent = '👁️';
+    }
+});
+
+apikeyForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const key = apikeyInput.value.trim();
+    if (key) {
+        setApiKey(key);
+        apikeySave.textContent = 'Saved';
+        setTimeout(() => {
+            apikeySave.textContent = 'Save';
+        }, 1500);
+        fetchModels(selectedModel, modelSelect);
+    }
+});
+
+const modelSelect = document.getElementById('model-select');
+let selectedModel = modelSelect.value;
+modelSelect.addEventListener('change', function() {
+    selectedModel = modelSelect.value;
+});
+
+if (openaiApiKey) {
+    fetchModels(selectedModel, modelSelect);
+}
+
+chatInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = (this.scrollHeight) + 'px';
+});
+
+chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        chatForm.dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));
+    }
+});
+
+attachEditorUpdate(window.editorView, window.editor, () => updateEditorContentFromView(window.editorView, window.editor));
+
+chatForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const msg = chatInput.value.trim();
+    if (!msg) return;
+    addUserMessage(msg, chatMessages, renderMarkdown);
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    await handleChatSubmit({
+        msg,
+        chatMessages,
+        renderMarkdown,
+        latestEditorContent,
+        selectedModel
+    });
+});
 
 initializeUIElements();

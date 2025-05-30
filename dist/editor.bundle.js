@@ -24419,7 +24419,7 @@ var editor = (function (exports) {
    }
 
    function generateUUID() {
-       return 'xxxxxxxx-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+       return 'xxxxxxxx'.replace(/[xy]/g, function(c) {
            const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
            return v.toString(16);
        });
@@ -24456,6 +24456,7 @@ var editor = (function (exports) {
 
    function setEditorView(view) {
        editorView = view;
+       window.editorView = editorView; // Expose editorView globally for debugging
    }
 
    function initializeUIElements(view) {
@@ -24839,6 +24840,148 @@ var editor = (function (exports) {
        };
    }
 
+   // src/api.js
+   let openaiApiKey = localStorage.getItem('openai_apikey') || '';
+
+   function setApiKey(key) {
+       openaiApiKey = key;
+       localStorage.setItem('openai_apikey', key);
+   }
+
+   async function fetchModels(selectedModel, modelSelect) {
+       if (!openaiApiKey) return;
+       try {
+           const res = await fetch("https://api.openai.com/v1/models", {
+               headers: {
+                   "Authorization": "Bearer " + openaiApiKey
+               }
+           });
+           if (!res.ok) return;
+           const data = await res.json();
+           const models = data.data.map(m => m.id).filter(id => id.startsWith("gpt-"));
+           const uniqueModels = [...new Set(models)].sort();
+           modelSelect.innerHTML = "";
+           uniqueModels.forEach(id => {
+               const opt = document.createElement("option");
+               opt.value = id;
+               opt.textContent = id;
+               modelSelect.appendChild(opt);
+           });
+           if (uniqueModels.includes(selectedModel)) {
+               modelSelect.value = selectedModel;
+           } else {
+               selectedModel = modelSelect.value;
+           }
+       } catch (e) {
+           // Ignore errors
+       }
+   }
+
+   async function fetchChatCompletion(selectedModel, messages) {
+       const response = await fetch("https://api.openai.com/v1/chat/completions", {
+           method: "POST",
+           headers: {
+               "Content-Type": "application/json",
+               "Authorization": "Bearer " + openaiApiKey
+           },
+           body: JSON.stringify({
+               model: selectedModel,
+               messages: messages,
+               max_tokens: 512,
+               temperature: 0.7
+           })
+       });
+       if (!response.ok) throw new Error(response.statusText);
+       return response.json();
+   }
+
+   // src/chat.js
+
+   let chatHistory = [
+       {
+           role: "system",
+           content: "You are Rhymr, an AI assistant built into a songwriting IDE. Your goal is to help users elevate their songwriting techniques by giving constructive feedback, creative suggestions, and answering questions about lyrics, rhyme, structure, and style. Always be supportive, insightful, and focused on helping the user improve their craft."
+       }
+   ];
+
+   function addUserMessage(msg, chatMessages, renderMarkdown) {
+       const userDiv = document.createElement('div');
+       userDiv.className = 'chat-message user';
+       userDiv.innerHTML = renderMarkdown(msg);
+       chatMessages.appendChild(userDiv);
+       chatMessages.scrollTop = chatMessages.scrollHeight;
+   }
+
+   function addBotMessage(text, chatMessages, renderMarkdown, isError = false) {
+       const botDiv = document.createElement('div');
+       botDiv.className = isError ? 'chat-message error' : 'chat-message bot';
+       botDiv.innerHTML = renderMarkdown ? renderMarkdown(text) : text;
+       chatMessages.appendChild(botDiv);
+       chatMessages.scrollTop = chatMessages.scrollHeight;
+       return botDiv;
+   }
+
+   async function handleChatSubmit({
+       msg,
+       chatMessages,
+       renderMarkdown,
+       latestEditorContent,
+       selectedModel
+   }) {
+       let contextMsg = null;
+       if (latestEditorContent && latestEditorContent.trim().length > 0) {
+           contextMsg = {
+               role: "system",
+               content: "The following is the current song being written by the user in the editor:\n\n" + latestEditorContent
+           };
+       }
+       let messages = [chatHistory[0]];
+       if (contextMsg) messages.push(contextMsg);
+       messages = messages.concat(chatHistory.filter(m => m.role !== "system"));
+       messages.push({role: "user", content: msg});
+       const botDiv = addBotMessage('...', chatMessages);
+       try {
+           const data = await fetchChatCompletion(selectedModel, messages);
+           const reply = data.choices?.[0]?.message?.content?.trim() || "No response.";
+           botDiv.innerHTML = renderMarkdown(reply);
+           botDiv.className = 'chat-message bot';
+           chatHistory.push({role: "user", content: msg});
+           chatHistory.push({role: "assistant", content: reply});
+       } catch (err) {
+           botDiv.textContent = "Error: " + err.message;
+           botDiv.className = 'chat-message error';
+       }
+   }
+
+   // src/markdown.js
+   function renderMarkdown(md) {
+       return window.marked.parse(md);
+   }
+
+   // --- Editor Content Tracking ---
+   exports.latestEditorContent = "";
+
+   function updateEditorContentFromView(editorView, windowEditor) {
+       if (typeof editorView !== "undefined" && editorView && editorView.state) {
+           exports.latestEditorContent = editorView.state.doc.toString();
+       } else if (windowEditor && typeof windowEditor.getValue === "function") {
+           exports.latestEditorContent = windowEditor.getValue();
+       }
+   }
+
+   function attachEditorUpdate(editorView, windowEditor, updateFn) {
+       if (typeof editorView !== "undefined" && editorView && editorView.state) {
+           editorView.dispatch = ((origDispatch => tr => {
+               origDispatch(tr);
+               updateFn();
+           })(editorView.dispatch.bind(editorView)));
+           updateFn();
+       } else if (windowEditor && typeof windowEditor.on === "function") {
+           windowEditor.on("change", updateFn);
+           updateFn();
+       }
+   }
+
    function updateListener() {
        return EditorView.updateListener.of(update => {
            if (update.docChanged) {
@@ -24872,9 +25015,88 @@ var editor = (function (exports) {
 
    setEditorView(view);
 
+   // --- UI/Chat/Model Logic ---
+   const chatForm = document.getElementById('chat-form');
+   const chatInput = document.getElementById('chat-input');
+   const chatMessages = document.getElementById('chat-messages');
+
+   const apikeyForm = document.getElementById('apikey-form');
+   const apikeyInput = document.getElementById('apikey-input');
+   const spyToggle = document.getElementById('spy-toggle');
+   const apikeySave = document.getElementById('apikey-save');
+
+   if (openaiApiKey) {
+       apikeyInput.value = openaiApiKey;
+   }
+
+   spyToggle.addEventListener('click', function() {
+       if (apikeyInput.type === 'password') {
+           apikeyInput.type = 'text';
+           spyToggle.textContent = '🙈';
+       } else {
+           apikeyInput.type = 'password';
+           spyToggle.textContent = '👁️';
+       }
+   });
+
+   apikeyForm.addEventListener('submit', function(e) {
+       e.preventDefault();
+       const key = apikeyInput.value.trim();
+       if (key) {
+           setApiKey(key);
+           apikeySave.textContent = 'Saved';
+           setTimeout(() => {
+               apikeySave.textContent = 'Save';
+           }, 1500);
+           fetchModels(selectedModel, modelSelect);
+       }
+   });
+
+   const modelSelect = document.getElementById('model-select');
+   let selectedModel = modelSelect.value;
+   modelSelect.addEventListener('change', function() {
+       selectedModel = modelSelect.value;
+   });
+
+   if (openaiApiKey) {
+       fetchModels(selectedModel, modelSelect);
+   }
+
+   chatInput.addEventListener('input', function() {
+       this.style.height = 'auto';
+       this.style.height = (this.scrollHeight) + 'px';
+   });
+
+   chatInput.addEventListener('keydown', function(e) {
+       if (e.key === 'Enter' && !e.shiftKey) {
+           e.preventDefault();
+           chatForm.dispatchEvent(new Event('submit', {cancelable: true, bubbles: true}));
+       }
+   });
+
+   attachEditorUpdate(window.editorView, window.editor, () => updateEditorContentFromView(window.editorView, window.editor));
+
+   chatForm.addEventListener('submit', async function(e) {
+       e.preventDefault();
+       const msg = chatInput.value.trim();
+       if (!msg) return;
+       addUserMessage(msg, chatMessages, renderMarkdown);
+       chatInput.value = '';
+       chatInput.style.height = 'auto';
+       await handleChatSubmit({
+           msg,
+           chatMessages,
+           renderMarkdown,
+           latestEditorContent: exports.latestEditorContent,
+           selectedModel
+       });
+   });
+
    initializeUIElements();
 
+   exports.attachEditorUpdate = attachEditorUpdate;
    exports.createEditorConfig = createEditorConfig;
+   exports.updateEditorContentFromView = updateEditorContentFromView;
    exports.updateListener = updateListener;
    exports.view = view;
 

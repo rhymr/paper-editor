@@ -5,6 +5,7 @@ let editorView = null;
 
 export function setEditorView(view) {
     editorView = view;
+    window.editorView = editorView; // Expose editorView globally for debugging
 }
 
 export function initializeUIElements(view) {

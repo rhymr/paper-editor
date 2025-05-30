@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="src/styles/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Rapper IDE</title>
+    <title>Rhymr (Beta)</title>
 </head>
 <body>
 <div class="navbar">
@@ -29,12 +29,35 @@
     </div>
     <div id="dragbar"></div>
     <div class="column" id="right-column">
-        <a>Right column (work in progress)</a>
+        <div id="chat-container">
+            <!-- API Key input at the top -->
+            <form id="apikey-form" autocomplete="off" style="margin-bottom:8px; display:flex; gap:8px;">
+                <input id="apikey-input" type="password" placeholder="OpenAI API Key" style="flex:1; background:#0f0f0f; border:1px solid #888; color:#fff; border-radius:3px; padding:6px 10px; font-family:monospace; font-size:1em;">
+                <button type="button" id="spy-toggle" style="background:#0f0f0f; color:#fff; border:1px solid #888; border-radius:3px; padding:6px 10px; font-family:monospace; font-size:1em; cursor:pointer;">👁️</button>
+                <button type="submit" id="apikey-save" style="background:#0f0f0f; color:#fff; border:1px solid #888; border-radius:3px; padding:6px 16px; font-family:monospace; font-size:1em; cursor:pointer;">Save</button>
+                <div style="display:flex; align-items:center; gap:4px;">
+                    <!-- <label for="model-select">Model:</label> -->
+                    <select id="model-select">
+                        <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
+                        <option value="gpt-4">gpt-4</option>
+                    </select>
+                </div>
+            </form>
+            
+
+            <div id="chat-messages"></div>
+            <form id="chat-form" autocomplete="off" style="display:flex;">
+                <textarea id="chat-input" placeholder="Type a message..." rows="1" style="resize: none; flex:1; background:#0f0f0f; border:1px solid #888; color:#fff; border-radius:3px; padding:6px 10px; font-family:monospace; font-size:1em;"></textarea>
+                <button type="submit">Send</button>
+            </form>
+        </div>
     </div>
 </div>
 
 <script src="src/ui.js"></script>
 <script src="dist/editor.bundle.js"></script>
 <script src="src/utils/dragbar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="src/editor-app.js"></script>
 </body>
 </html>

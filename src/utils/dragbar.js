@@ -13,12 +13,18 @@ dragbar.addEventListener('mousedown', function(e) {
 
 document.addEventListener('mousemove', function(e) {
     if (!dragging) return;
-    // Calculate new width for left column
     const containerRect = container.getBoundingClientRect();
     let newLeftWidth = e.clientX - containerRect.left;
-    // Set min/max widths if desired
-    if (newLeftWidth < 100) newLeftWidth = 100;
-    if (newLeftWidth > containerRect.width - 100) newLeftWidth = containerRect.width - 100;
+
+    // Prevent dragging if it would push the chat container (right) off screen
+    // We'll require at least 20% of the container width for the right column
+    const minRightWidth = containerRect.width * 0.2;
+    const maxLeftWidth = containerRect.width - minRightWidth;
+    const minLeftWidth = 100; // Or containerRect.width * 0.2 for symmetry
+
+    if (newLeftWidth < minLeftWidth) newLeftWidth = minLeftWidth;
+    if (newLeftWidth > maxLeftWidth) newLeftWidth = maxLeftWidth;
+
     left.style.flex = 'none';
     left.style.width = newLeftWidth + 'px';
     right.style.flex = '1';
