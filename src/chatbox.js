@@ -1,5 +1,5 @@
 // src/chat.js
-import { fetchChatCompletion } from './api.js';
+import { fetchChatCompletion } from './api/openai.js';
 
 export let chatHistory = [
     {

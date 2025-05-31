@@ -1,4 +1,3 @@
-// src/utils/datamuse.js
 // Simple Datamuse API wrapper for rhyme/similar word queries
 
 const DATAMUSE_API = "https://api.datamuse.com/words";

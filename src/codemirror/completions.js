@@ -1,4 +1,4 @@
-import {englishWords, fetchWordList} from "./words";
+import {englishWords, fetchWordList} from "./wordsCount";
 
 fetchWordList()
 

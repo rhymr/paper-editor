@@ -1,10 +1,8 @@
 import {checkAndUpdateForContent, saveEditorContent} from "./utils/util";
 import {documentId, setAutoSave, setDocumentId} from "./config/config";
-import { phoneticRhymeHighlighter } from './words/phoneticRhymeHighlighter.js';
-import { syllableCounter } from './words/syllables.js';
-import { StateEffect } from '@codemirror/state';
-import { EditorView } from '@codemirror/view';
-import { Compartment } from '@codemirror/state';
+import {phoneticRhymeHighlighter} from './codemirror/rhymeHighlighter.js';
+import {syllableCounter} from './codemirror/syllableGutter.js';
+import {Compartment} from '@codemirror/state';
 
 let editorView = null;
 

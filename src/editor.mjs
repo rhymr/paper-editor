@@ -5,14 +5,14 @@ import {autocompletion} from "@codemirror/autocomplete"
 import {initializeUIElements, setEditorView, rhymeCompartment, syllableCompartment} from "./ui.js";
 import {checkAndUpdateForContent} from "./utils/util.js";
 import {autoSaveEnabled} from "./config/config.js";
-import {wordCounter} from "./words/words.js";
-import {syllableCountCache, syllableCounter} from "./words/syllables.js";
-import {englishCompletions} from "./words/completions.js";
-import { openaiApiKey, setApiKey, fetchModels } from "./utils/api.js";
-import { chatHistory, handleChatSubmit, addUserMessage } from "./utils/chat.js";
-import { renderMarkdown } from "./utils/markdown.js";
-import { phoneticRhymeHighlighter } from "./words/phoneticRhymeHighlighter.js";
-import { initBottomSectionRhymeZone } from "./rhymezone.js";
+import {wordCounter} from "./codemirror/wordsCount.js";
+import {syllableCountCache, syllableCounter} from "./codemirror/syllableGutter.js";
+import {englishCompletions} from "./codemirror/completions.js";
+import {openaiApiKey, setApiKey, fetchModels} from "./api/openai.js";
+import {handleChatSubmit, addUserMessage} from "./chatbox.js";
+import {renderMarkdown} from "./utils/markdown.js";
+import {phoneticRhymeHighlighter} from "./codemirror/rhymeHighlighter.js";
+import {initBottomSectionRhymeZone} from "./rhymezone.js";
 
 // --- Editor Content Tracking ---
 export let latestEditorContent = "";
