@@ -2,23 +2,55 @@
 todo.txt
 
 # Dependency directories
-node_modules
+node_modules/
 
 # TypeScript compiled files
-dist
+dist/
 *.tsbuildinfo
+
+# Build output
+build/
+coverage/
 
 # Environment files
 .env
-.env.local
+.env.*
+
+# Log files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # Editor directories and files
-.vs
-.idea
+.vs/
+.idea/
 *.swp
 *.swo
+.vscode/
 
 # OS generated files
 .DS_Store
 Thumbs.db
-dist/editor.bundle.js
+
+# Miscellaneous
+*.local
+*.cache
+*.bak
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Output bundles
+/dist/editor.bundle.js
+
+# Ignore Mac system files
+.AppleDouble
+.LSOverride
+Icon?
+
+# Ignore files from iCloud
+*.icloud
