@@ -5,7 +5,7 @@ todo.txt
 node_modules/
 
 # TypeScript compiled files
-dist/
+# dist/ (has to be commented to build on github pages)
 *.tsbuildinfo
 
 # Build output
@@ -43,9 +43,6 @@ Thumbs.db
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
-
-# Output bundles
-/dist/editor.bundle.js
 
 # Ignore Mac system files
 .AppleDouble
