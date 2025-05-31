@@ -71,18 +71,30 @@ function updateResultsTable(results, sortBy = "score", sortDir = "desc") {
 // Insert sort dropdown into the input area on init
 export function initBottomSectionRhymeZone() {
     const form = document.getElementById("rz-adv-search-bar");
+    console.debug("[RZ] form:", form);
+    form.setAttribute("action", "#"); // Prevent navigation on submit
     const input = document.getElementById("rz-word-input");
+    console.debug("[RZ] input:", input);
     // Set default checkbox states and render all checkboxes
     // (Checkboxes and column toggles are now rendered in HTML, not JS)
     // Remove all code that generates or inserts HTML for checkboxes and column toggles
     // Only attach listeners and restore state for checkboxes and column toggles
     const cbxRow = form.querySelector('.rz-adv-checkboxes');
     // Restore checkbox state from localStorage if available
-    const savedCheckboxes = JSON.parse(localStorage.getItem('rz-adv-checkboxes' || '{}'));
+    const savedCheckboxesRaw = localStorage.getItem('rz-adv-checkboxes');
+    let savedCheckboxes = {};
+    try {
+        if (savedCheckboxesRaw) savedCheckboxes = JSON.parse(savedCheckboxesRaw);
+    } catch (err) {
+        console.warn('[RZ] Failed to parse savedCheckboxes:', err);
+        savedCheckboxes = {};
+    }
+    console.debug("[RZ] savedCheckboxes:", savedCheckboxes);
     for (const opt of rhymeTypeOptions) {
         const cb = document.getElementById(opt.id);
+        console.debug(`[RZ] checkbox for ${opt.id}:`, cb);
         if (cb) {
-            if (savedCheckboxes.hasOwnProperty(opt.id)) {
+            if (savedCheckboxes && Object.prototype.hasOwnProperty.call(savedCheckboxes, opt.id)) {
                 cb.checked = !!savedCheckboxes[opt.id];
             } else {
                 cb.checked = !!opt.default;
@@ -101,35 +113,7 @@ export function initBottomSectionRhymeZone() {
     // Remove all code that generates or inserts HTML for column toggles in JS
     // Remove all code that generates or inserts HTML for rhyme type checkboxes in JS
     // Remove all code that generates or inserts HTML for the sort dropdown in JS
-    // Only attach listeners and restore state for checkboxes, column toggles, and sort dropdown, which are now rendered in the HTML file
-    // Column toggles (define only if not already defined)
-    const colTogglesArr = [
-        { id: 'col-rhyme', col: 1 },
-        { id: 'col-meter', col: 2 },
-        { id: 'col-pop', col: 3 },
-        { id: 'col-cats', col: 4 }
-    ];
-    // Restore column toggle state from localStorage
-    const savedColsObj = JSON.parse(localStorage.getItem('rz-adv-cols' || '{}'));
-    colTogglesArr.forEach(opt => {
-        const cb = document.getElementById(opt.id);
-        if (cb && savedColsObj.hasOwnProperty(opt.id)) {
-            cb.checked = !!savedColsObj[opt.id];
-        }
-        if (cb) {
-            cb.addEventListener('change', () => {
-                const state = {};
-                colTogglesArr.forEach(opt2 => {
-                    const cb2 = document.getElementById(opt2.id);
-                    if (cb2) state[opt2.id] = cb2.checked;
-                });
-                localStorage.setItem('rz-adv-cols', JSON.stringify(state));
-                updateColVisibility();
-            });
-        }
-    });
-    // Remove all code that generates or inserts HTML for the sort dropdown in JS
-    // Only attach listeners and restore state for the sort dropdown, which is now rendered in the HTML file
+    // Only attach listeners and restore state for checkboxes and sort dropdown, which are now rendered in the HTML file
     // Instead, just attach event listeners to the sort dropdown if it exists
     const sortSelect = document.getElementById("rz-sort-select");
     // Add sort handler (re-render only, no re-query)
@@ -144,32 +128,28 @@ export function initBottomSectionRhymeZone() {
             resultsDiv.innerHTML = renderTable(allResults, sortBy, sortDir);
         };
     }
-    form.addEventListener("submit", handleRhymeSearch);
-    input.addEventListener("keydown", e => {
+    form.addEventListener("submit", function(e) {
+        console.debug("[RZ] form submit event", e);
+        handleRhymeSearch(e);
+    });
+    input.addEventListener("keydown", function(e) {
+        console.debug("[RZ] input keydown event", e);
         if (e.key === "Enter") handleRhymeSearch(e);
     });
     // Remove checkbox listeners for live search (only search on submit)
     // Initial search is not run automatically
 
-    // Add copy-to-clipboard event after rendering results
-    const resultsDiv = document.getElementById("rz-adv-results");
-    const observer = new MutationObserver(() => {
-        document.querySelectorAll('.rz-word-copy').forEach(el => {
-            el.onclick = function() {
-                const word = this.getAttribute('data-word');
-                if (word) {
-                    navigator.clipboard.writeText(word);
-                    this.classList.add('copied');
-                    setTimeout(() => this.classList.remove('copied'), 600);
-                }
-            };
-        });
-    });
-    observer.observe(resultsDiv, { childList: true, subtree: true });
-    // Function to update column visibility
+    // --- COLUMN VISIBILITY CHECKBOXES (no localStorage, just live toggling) ---
+    // Attach listeners to column visibility checkboxes to show/hide columns live
+    const colToggles = [
+        { id: 'col-rhyme', col: 1 },
+        { id: 'col-meter', col: 2 },
+        { id: 'col-pop', col: 3 },
+        { id: 'col-cats', col: 4 }
+    ];
     function updateColVisibility() {
         const colState = {};
-        colTogglesArr.forEach((opt, i) => {
+        colToggles.forEach(opt => {
             const cb = document.getElementById(opt.id);
             colState[opt.col] = cb && cb.checked;
         });
@@ -188,11 +168,33 @@ export function initBottomSectionRhymeZone() {
             });
         });
     }
+    colToggles.forEach(opt => {
+        const cb = document.getElementById(opt.id);
+        if (cb) {
+            cb.addEventListener('change', updateColVisibility);
+        }
+    });
     // Update on initial load and after every table render
     const rzResultsDiv = document.getElementById("rz-adv-results");
     const colObs = new MutationObserver(updateColVisibility);
     colObs.observe(rzResultsDiv, { childList: true, subtree: true });
     setTimeout(updateColVisibility, 0);
+
+    // Add copy-to-clipboard event after rendering results
+    const resultsDiv = document.getElementById("rz-adv-results");
+    const observer = new MutationObserver(() => {
+        document.querySelectorAll('.rz-word-copy').forEach(el => {
+            el.onclick = function() {
+                const word = this.getAttribute('data-word');
+                if (word) {
+                    navigator.clipboard.writeText(word);
+                    this.classList.add('copied');
+                    setTimeout(() => this.classList.remove('copied'), 600);
+                }
+            };
+        });
+    });
+    observer.observe(resultsDiv, { childList: true, subtree: true });
 }
 
 async function handleRhymeSearch(e) {

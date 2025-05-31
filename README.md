@@ -4,7 +4,7 @@ Rhymr is a modern, AI-powered lyric and poetry writing editor with rhyme and syl
 
 ## Usage
 
-See [`https://rhymr.github.io/`](https://rhymr.github.io/editor.html)
+See [`https://rhymr.github.io/`](https://rhymr.github.io/)
 
 ## Contribution
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines on contributing, code style, and project setup.
@@ -21,6 +21,3 @@ See [`CONTRIBUTING.md`](CONTRIBUTING.md) for guidelines on contributing, code st
 
 ## License
 MIT
-
----
-Happy writing and coding!
