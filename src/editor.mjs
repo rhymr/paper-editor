@@ -12,6 +12,7 @@ import { openaiApiKey, setApiKey, fetchModels } from "./utils/api.js";
 import { chatHistory, handleChatSubmit, addUserMessage } from "./utils/chat.js";
 import { renderMarkdown } from "./utils/markdown.js";
 import { phoneticRhymeHighlighter } from "./words/phoneticRhymeHighlighter.js";
+import { initBottomSectionRhymeZone } from "./rhymezone.js";
 
 // --- Editor Content Tracking ---
 export let latestEditorContent = "";
@@ -146,6 +147,11 @@ chatForm.addEventListener('submit', async function(e) {
         latestEditorContent,
         selectedModel
     });
+});
+
+// Initialize advanced rhyme zone UI in bottom section
+window.addEventListener("DOMContentLoaded", () => {
+    initBottomSectionRhymeZone();
 });
 
 initializeUIElements();

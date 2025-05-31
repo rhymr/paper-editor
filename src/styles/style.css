@@ -29,10 +29,6 @@ body {
   box-sizing: border-box;
 }
 
-.cm-editor {
-  border: 1px dashed #888;
-}
-
 .ͼ1 .cm-line {
   padding: 0 2px 0 10px;
 }
@@ -223,9 +219,10 @@ li.dropdown {
     max-height: 70%;
     min-height: 0;
     overflow: auto;
+    border: 1px dashed #888;
 }
 
-#bottom-section {
+#rhymezone {
     flex: 1 1 50%;
     max-height: 50%;
     min-height: 0;
@@ -237,6 +234,70 @@ li.dropdown {
     overflow: auto;
     padding: 12px;
     font-family: monospace;
+}
+
+/* Add styles for the advanced rhyme zone UI in #rhymezone */
+#rhymezone .rz-adv-search-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* align-items: center; */
+    margin-bottom: 12px;
+    background: #181818;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #888;
+}
+#rhymezone .rz-adv-search-bar input,
+#rhymezone .rz-adv-search-bar select {
+    background: #0f0f0f;
+    color: #fff;
+    border: 1px solid #888;
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: 1em;
+}
+#rhymezone .rz-adv-search-bar button {
+    background: #005b41;
+    color: #fff;
+    border: 1px solid #81c784;
+    border-radius: 3px;
+    padding: 6px 16px;
+    font-family: monospace;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#rhymezone .rz-adv-search-bar button:hover {
+    background: #008170;
+}
+#rhymezone .rz-adv-message {
+    color: #81c784;
+    font-size: 1em;
+    margin: 8px 0;
+}
+#rhymezone .rz-adv-message.error {
+    color: #ff6961;
+}
+#rhymezone .rz-adv-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+#rhymezone .rz-adv-word {
+    background: #232d3f;
+    color: #fff;
+    border: 1px dashed #888;
+    border-radius: 3px;
+    padding: 4px 10px;
+    font-size: 1em;
+    margin-bottom: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+#rhymezone .rz-adv-word:hover {
+    background: #81c784;
+    color: #232d3f;
 }
 
 #right-column {
@@ -404,6 +465,116 @@ li.dropdown {
 .cm-content .rhyme-highlight {
   font-weight: bold;
   color: #222;
+}
+
+.rz-adv-search-bar > div {
+    flex: 1 1 0;
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+}
+.rz-adv-search-bar {
+    width: 100%;
+    margin: 0 auto 12px auto;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+.rz-adv-search-bar > div,
+.rz-adv-checkboxes {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+.rz-adv-checkboxes {
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding: 0 0 0 0;
+}
+.rz-adv-table {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 auto 0 auto;
+    border-collapse: collapse;
+    background: #181818;
+    color: #fff;
+    font-family: monospace;
+    font-size: 1em;
+    table-layout: auto;
+}
+.rz-adv-results {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+.rz-adv-table th, .rz-adv-table td {
+    border: 1px solid #888;
+    padding: 6px 10px;
+    text-align: left;
+    word-break: break-word;
+}
+.rz-adv-table th {
+    background: #232d3f;
+    font-weight: bold;
+}
+.rz-adv-table tr:nth-child(even) {
+    background: #202020;
+}
+.rz-adv-table tr:hover {
+    background: #333;
+}
+.rz-adv-checkboxes label {
+    font-size: 1em;
+    color: #fff;
+    font-family: monospace;
+    margin-right: 12px;
+    cursor: pointer;
+}
+.rz-adv-checkboxes input[type="checkbox"] {
+    accent-color: #81c784;
+    margin-right: 4px;
+}
+/* .rz-adv-table th:first-child, */
+.rz-adv-table td:first-child {
+    padding: 0 !important;
+    color: #232d3f;      /* Dark by default */
+    /* font-weight: bold; */
+    letter-spacing: 0.5px;
+    /* Add any other styles you want */
+}
+
+.rz-word-copy {
+    color: white;
+    font-size: 1.11em;
+    /* font-weight: bold; */
+    letter-spacing: 0.5px;
+    border: 1.5px dashed #81c784;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin: 4px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    display: block;
+    /* width: 100%; */
+    box-sizing: border-box;
+    user-select: none;
+    text-align: left;
+}
+.rz-word-copy:hover, .rz-word-copy.copied {
+    background: #81c784; /* Green on hover/copy */
+    color: #181818;
+    border-color: #005b41;
+}
+
+.rz-word-copy.copied {
+    background: #62b8c0; /* Green when copied */
+    color: #181818;
+    border-color: #234244;
 }
 
 @media (max-width: 900px) {
