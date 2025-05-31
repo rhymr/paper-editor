@@ -40,9 +40,13 @@ document.addEventListener('mousemove', function(e) {
         leftColumn.style.flex = '1 1 0';
     } else if (dragging === 'editor') {
         let fileWidth = fileColumn.offsetWidth;
+        // Subtract a small buffer (e.g. 8px) to stop before pushing
+        const buffer = 200;
         let newEditorWidth = e.clientX - containerRect.left - fileWidth;
         const minEditorWidth = 180;
-        const maxEditorWidth = containerRect.width - fileWidth - 200;
+        const minChatWidth = 200;
+        // Stop BEFORE the chat would be pushed out (leave buffer)
+        const maxEditorWidth = containerRect.width - fileWidth - minChatWidth - buffer;
         if (newEditorWidth < minEditorWidth) newEditorWidth = minEditorWidth;
         if (newEditorWidth > maxEditorWidth) newEditorWidth = maxEditorWidth;
         leftColumn.style.flex = 'none';
