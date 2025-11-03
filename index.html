@@ -1,29 +1,125 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles/style.css">
-    <link rel="stylesheet" href="src/styles/home.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Rhymr (Beta)</title>
+    <title>Rhymr Editor</title>
 </head>
 <body>
-<div class="header">Rhymr (Beta)</div>
+<div class="app-container">
+    <div class="navbar">
+<!--        <ul>-->
+<!--            <li class="dropdown">-->
+<!--&lt;!&ndash;                <a class="dropbtn">File</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="dropdown-content">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a id="newButton">New File</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input type="file" id="fileInput" style="display: none;" accept=".txt" />&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a id="openFileButton">Open File</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <a id="saveButton">Export File</a>&ndash;&gt;-->
+<!--&lt;!&ndash;                </div>&ndash;&gt;-->
+<!--            </li>-->
 
-<div class="center-content">
-    <!-- <a href="editor.html">
-        <img class="showcase-image" src="assets/images/showcase.png" href="editor.html" alt="showcase">
-    </a>
-    <a><h1 class="header center-h1">minimalistic rap editor</h1></a> -->
-    <a class="btn" href="editor.html">Get Started!</a>
-    <!-- <a class="btn" href="https://github.com/rapperide/rapperide.github.io" target="_blank">Open Source!</a> -->
+<!--            <li class="checkbox-center">-->
+<!--                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">-->
+<!--                    <input type="checkbox" id="toggleFullscreen" onchange="toggleFullscreen()" style="margin:0;"> Fullscreen-->
+<!--                </label>-->
+<!--                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">-->
+<!--                    <input type="checkbox" id="toggleRhymeHighlight" checked style="margin:0;"> Rhyme Highlight (beta)-->
+<!--                </label>-->
+<!--                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">-->
+<!--                    <input type="checkbox" id="toggleSyllableCounter" checked style="margin:0;"> Syllable Counter-->
+<!--                </label>-->
+<!--            </li>-->
+<!--&lt;!&ndash;            <li class="navbar-apikey-form">&ndash;&gt;-->
+<!--&lt;!&ndash;                <form id="apikey-form" autocomplete="off">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <input id="apikey-input" type="password" placeholder="OpenAI API Key">&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button type="button" id="spy-toggle">👁️</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <button type="submit" id="apikey-save">Save</button>&ndash;&gt;-->
+<!--&lt;!&ndash;                    <div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <select id="model-select">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <option value="gpt-4">gpt-4</option>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </select>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                </form>&ndash;&gt;-->
+<!--&lt;!&ndash;            </li>&ndash;&gt;-->
+<!--        </ul>-->
+    </div>
+
+    <div class="main-container">
+<!--        <div class="column" id="file-column">-->
+<!--            <div id="file-directory"></div>-->
+<!--        </div>-->
+<!--        <div class="dragbar" id="dragbar-file"></div>-->
+        <div class="column" id="left-column">
+            <div id="editor"></div>
+<!--            <div id="rhymezone">-->
+<!--                <form id="rz-adv-search-bar" class="rz-adv-search-bar">-->
+<!--                    <div style="display: flex; gap: 8px; flex: 1 1 0;">-->
+<!--                        <input id="rz-word-input" type="text" placeholder="Enter a word..." autocomplete="off" />-->
+<!--                        <button id="rz-search-btn" type="submit">Search</button>-->
+<!--                        <select id="rz-sort-select">-->
+<!--                            <option value="score-desc">Rhyme rating (high → low)</option>-->
+<!--                            <option value="score-asc">Rhyme rating (low → high)</option>-->
+<!--                            <option value="word-asc">Word (A–Z)</option>-->
+<!--                            <option value="word-desc">Word (Z–A)</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
+<!--                    <div class="rz-adv-checkboxes" style="display: flex; gap: 16px; align-items: center; margin-top: 8px;">-->
+<!--                        <label><input type="checkbox" id="cb-perfect" checked> Perfect rhymes</label>-->
+<!--                        <label><input type="checkbox" id="cb-near" checked> Near rhymes</label>-->
+<!--                        <label><input type="checkbox" id="cb-phrases" checked> Phrases</label>-->
+<!--                        <label><input type="checkbox" id="cb-names" checked> Names</label>-->
+<!--                        <label><input type="checkbox" id="cb-rare"> Rare words</label>-->
+<!--                        <label><input type="checkbox" id="cb-hom"> Homophones</label>-->
+<!--                        <label><input type="checkbox" id="cb-cns"> Same consonants</label>-->
+<!--                        <label><input type="checkbox" id="cb-relphr"> Phrase rhymes</label>-->
+<!--                        <label><input type="checkbox" id="cb-sl"> Similar sound</label>-->
+<!--                    </div>-->
+<!--                    <div class="rz-adv-col-toggles" style="display: flex; gap: 16px; align-items: center; margin-top: 6px;">-->
+<!--                        <label style="margin-right:10px;"><input type="checkbox" id="col-rhyme" checked> Show Rhyme rating</label>-->
+<!--                        <label style="margin-right:10px;"><input type="checkbox" id="col-meter"> Show Meter</label>-->
+<!--                        <label style="margin-right:10px;"><input type="checkbox" id="col-pop"> Show Popularity</label>-->
+<!--                        <label style="margin-right:10px;"><input type="checkbox" id="col-cats"> Show Categories</label>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--                <div id="rz-adv-results">-->
+<!--                    <table class="rz-adv-table" id="rz-adv-table" style="width:100%;table-layout:fixed;display:none;">-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Word</th>-->
+<!--                                <th>Rhyme rating</th>-->
+<!--                                <th>Meter</th>-->
+<!--                                <th>Popularity</th>-->
+<!--                                <th>Categories</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody id="rz-adv-tbody">-->
+<!--                            &lt;!&ndash; Results will be inserted here by JS &ndash;&gt;-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                    <div id="rz-adv-message" class="rz-adv-message" style="display:none;"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+<!--        <div class="dragbar" id="dragbar-editor"></div>-->
+<!--        <div class="column" id="right-column">-->
+<!--            <div id="chat-container">-->
+<!--                <div id="chat-messages"></div>-->
+<!--                <form id="chat-form" autocomplete="off">-->
+<!--                    <textarea id="chat-input" placeholder="Type a message..." rows="1"></textarea>-->
+<!--                    <button type="submit">Send</button>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--        </div>-->
+    </div>
 </div>
 
-<!--<div style="padding-top: 100px">-->
-<!--    <a href="https://github.com/rapperide/rapperide.github.io">-->
-<!--        <img alt="Star History Chart" src="http://localhost:8080/svg?repos=rapperide/rapperide.github.io&type=Timeline&theme=dark" />-->
-<!--    </a>-->
-<!--</div>-->
-
+<script src="src/ui.js"></script>
+<script src="dist/editor.bundle.js"></script>
+<script src="src/utils/dragbar.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
