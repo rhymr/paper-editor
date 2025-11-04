@@ -1,6 +1,6 @@
 // src/rhymezone.js
 // Handles the advanced rhyme zone UI and logic for #rhymezone
-import { getPerfectRhymes, getNearRhymes, getSimilarSounds, getPhrases, getNames, getRareWords, datamuseQuery } from "./api/datamuse.js";
+import { getPerfectRhymes, getNearRhymes, getSimilarSounds, getPhrases, getNames, getRareWords, datamuseQuery } from "../../../../../../WebstormProjects/windows-xp/src/api/datamuse.js";
 
 // Add all Datamuse rhyme-related options as checkboxes
 const rhymeTypeOptions = [

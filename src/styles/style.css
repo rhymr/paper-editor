@@ -155,6 +155,7 @@ li.dropdown {
 }
 /*NAV BAR - END*/
 
+/*noinspection ALL*/
 .app-container {
     width: subtract(100vw, 8px);
     height: 100vh;
@@ -266,7 +267,6 @@ li.dropdown {
     border-radius: 3px;
     padding: 6px 16px;
     font-family: monospace;
-    2em;
     cursor: pointer;
     transition: background 0.2s;
 }

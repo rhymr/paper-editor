@@ -1,4 +1,4 @@
-# Rhymr Editor
+# Paper Editor
 
 ## Usage
 See [`https://rhymr.github.io/`](https://rhymr.github.io/)

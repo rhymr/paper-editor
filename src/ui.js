@@ -3,6 +3,7 @@ import {documentId, setAutoSave, setDocumentId} from "./config/config";
 import {phoneticRhymeHighlighter} from './codemirror/rhymeHighlighter.js';
 import {syllableCounter} from './codemirror/syllableGutter.js';
 import {Compartment} from '@codemirror/state';
+import {initBottomSectionRhymeZone} from "./rhymezone";
 
 let editorView = null;
 
@@ -12,6 +13,11 @@ export function setEditorView(view) {
 }
 
 export function initializeUIElements(view) {
+    /** Initialize advanced rhyme zone UI in the bottom section */
+    window.addEventListener("DOMContentLoaded", () => {
+        initBottomSectionRhymeZone();
+    });
+
     /** NavBar File Buttons */
     const saveButton = document.getElementById('saveButton');
     saveButton.addEventListener('click', saveContent);

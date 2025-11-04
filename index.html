@@ -5,56 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/styles/style.css">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <title>Rhymr Editor</title>
+    <title>Paper Editor</title>
 </head>
 <body>
 <div class="app-container">
-    <div class="navbar">
-<!--        <ul>-->
-<!--            <li class="dropdown">-->
-<!--&lt;!&ndash;                <a class="dropbtn">File</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                <div class="dropdown-content">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <a id="newButton">New File</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <input type="file" id="fileInput" style="display: none;" accept=".txt" />&ndash;&gt;-->
-<!--&lt;!&ndash;                    <a id="openFileButton">Open File</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <a id="saveButton">Export File</a>&ndash;&gt;-->
-<!--&lt;!&ndash;                </div>&ndash;&gt;-->
-<!--            </li>-->
-
-<!--            <li class="checkbox-center">-->
-<!--                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">-->
-<!--                    <input type="checkbox" id="toggleFullscreen" onchange="toggleFullscreen()" style="margin:0;"> Fullscreen-->
-<!--                </label>-->
-<!--                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">-->
-<!--                    <input type="checkbox" id="toggleRhymeHighlight" checked style="margin:0;"> Rhyme Highlight (beta)-->
-<!--                </label>-->
-<!--                <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">-->
-<!--                    <input type="checkbox" id="toggleSyllableCounter" checked style="margin:0;"> Syllable Counter-->
-<!--                </label>-->
-<!--            </li>-->
-<!--&lt;!&ndash;            <li class="navbar-apikey-form">&ndash;&gt;-->
-<!--&lt;!&ndash;                <form id="apikey-form" autocomplete="off">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <input id="apikey-input" type="password" placeholder="OpenAI API Key">&ndash;&gt;-->
-<!--&lt;!&ndash;                    <button type="button" id="spy-toggle">👁️</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <button type="submit" id="apikey-save">Save</button>&ndash;&gt;-->
-<!--&lt;!&ndash;                    <div>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <select id="model-select">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                            <option value="gpt-4">gpt-4</option>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </select>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                </form>&ndash;&gt;-->
-<!--&lt;!&ndash;            </li>&ndash;&gt;-->
-<!--        </ul>-->
-    </div>
-
     <div class="main-container">
-<!--        <div class="column" id="file-column">-->
-<!--            <div id="file-directory"></div>-->
-<!--        </div>-->
-<!--        <div class="dragbar" id="dragbar-file"></div>-->
         <div class="column" id="left-column">
             <div id="editor"></div>
+<!--            TODO: RHYME WINDOW -->
 <!--            <div id="rhymezone">-->
 <!--                <form id="rz-adv-search-bar" class="rz-adv-search-bar">-->
 <!--                    <div style="display: flex; gap: 8px; flex: 1 1 0;">-->
@@ -104,16 +62,6 @@
 <!--                </div>-->
 <!--            </div>-->
         </div>
-<!--        <div class="dragbar" id="dragbar-editor"></div>-->
-<!--        <div class="column" id="right-column">-->
-<!--            <div id="chat-container">-->
-<!--                <div id="chat-messages"></div>-->
-<!--                <form id="chat-form" autocomplete="off">-->
-<!--                    <textarea id="chat-input" placeholder="Type a message..." rows="1"></textarea>-->
-<!--                    <button type="submit">Send</button>-->
-<!--                </form>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </div>
 

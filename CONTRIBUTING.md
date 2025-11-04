@@ -1,6 +1,6 @@
-# Contributing to Rhymr
+# Contributing to Paper
 
-Thank you for your interest in contributing to Rhymr! This project is a modern, AI-powered lyric and poetry writing editor with rhyme and syllable tools, chat, and file management. Below you'll find guidelines and information to help you get started.
+Thank you for your interest in contributing to Paper! This project is a modern, AI-powered lyric and poetry writing editor with rhyme and syllable tools, chat, and file management. Below you'll find guidelines and information to help you get started.
 
 ## Tech Stack
 - **Frontend:** HTML, CSS (custom, no framework), vanilla JavaScript (ES6+ modules)
