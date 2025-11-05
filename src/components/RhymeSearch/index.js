@@ -48,21 +48,6 @@ export default class RhymeSearch extends DesktopWindow {
       overflow: hidden;
     `;
 
-    const style = document.createElement('style');
-    style.textContent = `
-      :host {
-        box-shadow: none;
-      }
-      
-      .window__control-panel {
-        background: #333 !important;
-        color: #fff !important;
-        border: 0px !important;
-        margin: 0px !important;
-      }
-    `;
-    this.shadowRoot.appendChild(style);
-
     this.renderSearchUI();
     this.addSearchHandlers();
   }

@@ -393,14 +393,15 @@ export default class DesktopWindow extends HTMLElement {
           max-height: calc(100% - 35px);
           width: fit-content;
           height: fit-content;
-
+          font-family: monospace, monospace;
           font-size: 11px;
           box-shadow: inset -1px -1px #00138c, inset 1px 1px #0831d9, inset -2px -2px #001ea0,
             inset 2px 2px #166aee, inset -3px -3px #003bda, inset 3px 3px #0855dd;
+          padding: 4px;
           border-top-left-radius: 8px;
           border-top-right-radius: 8px;
           -webkit-font-smoothing: antialiased;
-          background: #ece9d8;
+          background: #1E1E1E;
         }
 
         :host(.maximized) {
@@ -516,6 +517,7 @@ export default class DesktopWindow extends HTMLElement {
             rgba(0, 61, 215, 1) 96%,
             rgba(0, 61, 215, 1) 100%
           );
+          margin: -4px -4px 0;
           padding: 3px 5px 3px 3px;
           border-top: 1px solid #0831d9;
           border-left: 1px solid #0831d9;
@@ -546,8 +548,10 @@ export default class DesktopWindow extends HTMLElement {
           display: flex;
           flex-flow: row nowrap;
           justify-content: flex-start;
-          border-bottom: 1px solid #ccc;
-          margin: 0 3px;
+          border-bottom: 1px solid #bd3939;
+          background: #333;
+          color: #fff;
+          padding-left: 5px;
         }
 
         .window__dropdown {
@@ -562,7 +566,7 @@ export default class DesktopWindow extends HTMLElement {
         }
 
         .window__dropdown-activator:not(.disabled):hover {
-          background-color: #d6dff7;
+          background-color: #444;
         }
 
         .window__dropdown-content {
@@ -570,8 +574,9 @@ export default class DesktopWindow extends HTMLElement {
           position: absolute;
           left: 0;
           top: 100%;
-          background: #ece9d8;
-          border: 1px solid #ccc;
+          background: #333;
+          border: 1px solid #bd3939;
+          border-top: none;
           min-width: 33px;
           z-index: 2;
         }
@@ -584,7 +589,7 @@ export default class DesktopWindow extends HTMLElement {
         }
 
         .window__dropdown-choice:not(.disabled):hover {
-          background-color: #d6dff7;
+          background-color: #444;
         }
 
         .window__dropdown-activator.disabled,

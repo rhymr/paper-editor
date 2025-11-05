@@ -68,7 +68,7 @@ export default class PaperEditor extends DesktopWindow {
     const style = document.createElement('style');
     style.textContent = `
       /* Base font for the window and ensure width is controlled by explicit size, not content */
-      :host { font-family: monospace; width: auto; min-width: 0; box-sizing: border-box; box-shadow: 0; }
+      :host { width: auto; min-width: 0; box-sizing: border-box; }
       .window { width: 100%; height: 100%; box-sizing: border-box; display: flex; flex-direction: column; }
       .window__body { width: 100%; min-width: 0; min-height: 0; box-sizing: border-box; display: flex; }
       /* Editor font family & size */
@@ -93,16 +93,6 @@ export default class PaperEditor extends DesktopWindow {
       #word-count { padding-left: 5px; margin: 3px; }
       /* Rhyme highlight text styling */
       .cm-content .rhyme-highlight { font-weight: bold; color: #000; }
-      
-      :host {
-        box-shadow: none;
-      }
-      .window__control-panel {
-        background: #333 !important;
-        color: #fff !important;
-        border: 0px !important;
-        margin: 0px !important;
-      }
     `;
     this.shadowRoot.appendChild(style);
 
@@ -179,6 +169,9 @@ export default class PaperEditor extends DesktopWindow {
             <div class="window__dropdown-choice">Cut</div>
             <div class="window__dropdown-choice">Copy</div>
             <div class="window__dropdown-choice">Paste</div>
+            <div class="window__dropdown-choice"></div>
+            <div class="window__dropdown-choice">Undo</div>
+            <div class="window__dropdown-choice">Redo</div>
           </div>
         </div>
       `;

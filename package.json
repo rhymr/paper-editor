@@ -46,6 +46,7 @@
     "codemirror": "^6.0.2",
     "double-metaphone": "^2.0.1",
     "openai": "^4.85.4",
-    "thememirror": "^2.0.1"
+    "thememirror": "^2.0.1",
+    "cmu-pronouncing-dictionary": "^3.0.0"
   }
 }
